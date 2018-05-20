@@ -1,0 +1,45 @@
+===================================================
+Sparc Component ZCML Configuration
+===================================================
+The entries points for configuring the Zope component registry via
+zope.configuration utilities are a bit cumbersome.  This module provides
+some convienence wrappers to make quick work out of getting a ZCML-based
+configured registry.
+
+Everything starts with a prepared configuration machine
+
+>>> import sparc.component.configuration.config as config
+>>> from sparc.component.configuration import ISparcPreparedConfigurationContext
+>>> cm = config.PreparedConfigurationMachine()
+>>> config.ISparcPreparedConfigurationContext.providedBy(cm)
+True
+
+We can mock-up a sample ZopeComponentConfiguration value mapping 
+(see configure.yaml)
+
+>>> import sparc.component.configuration
+>>> v = {'zcml': [{'package': sparc.component.configuration, 'file':'testing.zcml'}]}
+>>> actions_len_b4 = len(cm.actions) #we track to insure this gets bumped
+>>> config.handle_sparc_component_config_value(cm, v)
+>>> len(cm.actions) > actions_len_b4
+True
+
+The above only registered the zcml entry point with the configuration machine,
+no registration actions have yet taken place, i.e. lookups don't yet work
+
+>>> from zope import component
+>>> component.createObject(u"sparc.component.configuration.test")
+Traceback (most recent call last):
+...
+ComponentLookupError: (<InterfaceClass zope.component.interfaces.IFactory>, u'sparc.component.configuration.test')
+
+The general use case is here...given a valid Sparc config container, we can
+register ZCML components into the global registry.
+
+>>> from sparc.config import container
+>>> config.handle_sparc_component_config_container(
+...     container.SparcConfigContainer({'ZopeComponentConfiguration': v}))
+
+Now we can lookup our components
+
+>>> test = component.createObject(u"sparc.component.configuration.test")

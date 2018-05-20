@@ -1,0 +1,7 @@
+ZopeComponentConfiguration:
+ features:
+  - some_list_of_features
+ zcml:
+  - package: optional.python.package 
+    file: file1.zcml
+  - file: some/path/to/file2.zcml

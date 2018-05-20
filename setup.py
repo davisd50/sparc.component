@@ -42,6 +42,7 @@ setup(name='sparc.component',
           'setuptools',
           'zope.interface',
           'zope.component',
+          'zope.configuration',
           'sparc.config'
       ],
       tests_require=TESTS_REQUIRE,
