@@ -18,7 +18,7 @@ We can mock-up a sample ZopeComponentConfiguration value mapping
 (see configure.yaml)
 
 >>> import sparc.component.configuration
->>> v = {'zcml': [{'package': sparc.component.configuration, 'file':'testing.zcml'}]}
+>>> v = {'zcml': [{'package': 'sparc.component.configuration', 'file':'testing.zcml'}]}
 >>> actions_len_b4 = len(cm.actions) #we track to insure this gets bumped
 >>> config.handle_sparc_component_config_value(cm, v)
 >>> len(cm.actions) > actions_len_b4

@@ -1,6 +1,7 @@
 from zope import interface
 from zope.configuration import xmlconfig, config
 from zope.configuration.interfaces import IConfigurationContext
+from zope.dottedname.resolve import resolve
 from sparc.config import IConfigContainer
 from .interfaces import ISparcPreparedConfigurationContext
 
@@ -35,7 +36,7 @@ def handle_sparc_component_config_value(context, value):
         
         for spec in value.get('zcml', []):
             xmlconfig.file(spec.get('file', 'configure.zcml'), 
-                           spec.get('package', None), 
+                           resolve(spec.get('package', None)), 
                            context=context, 
                            execute=False)
     
