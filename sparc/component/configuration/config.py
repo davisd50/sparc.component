@@ -35,8 +35,11 @@ def handle_sparc_component_config_value(context, value):
             context.provideFeature(feature)
         
         for spec in value.get('zcml', []):
+            p = spec.get('package', None)
+            if p:
+                p = resolve(p)
             xmlconfig.file(spec.get('file', 'configure.zcml'), 
-                           resolve(spec.get('package', None)), 
+                           p, 
                            context=context, 
                            execute=False)
     
